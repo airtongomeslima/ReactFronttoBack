@@ -7,16 +7,43 @@ class Contact extends Component {
   //  email: PropTypes.string.isRequired,
   //  phone: PropTypes.string.isRequired
   //};
+  state = {
+    showContactInfo: false
+  };
+
+  onShowClick = e => {
+    this.setState({ showContactInfo: !this.state.showContactInfo });
+  };
+
+  onDeleteClick = () => {
+    this.props.deleteClickHandler();
+  };
 
   render() {
-    const { name, email, phone } = this.props;
+    const { contact } = this.props;
+    const { showContactInfo } = this.state;
+
     return (
-      <div>
-        <h4>{name}</h4>
-        <ul>
-          <li>Email: {email}</li>
-          <li>Phone: {phone}</li>
-        </ul>
+      <div className="card card-body mb-3">
+        <h4>
+          {contact.name}{" "}
+          <i
+            onClick={this.onShowClick.bind(this, 1)}
+            className="fas fa-sort-down"
+            style={{ cursor: "pointer" }}
+          />
+          <i
+            className="fas fa-times"
+            style={{ cursor: "pointer", float: "right", color: "red" }}
+            onClick={this.onDeleteClick}
+          />
+        </h4>
+        {showContactInfo ? (
+          <ul className="list-group">
+            <li className="list-group-item">Email: {contact.email}</li>
+            <li className="list-group-item">Phone: {contact.phone}</li>
+          </ul>
+        ) : null}
       </div>
     );
   }
@@ -25,7 +52,8 @@ class Contact extends Component {
 Contact.protoTypes = {
   name: PropTypes.string.isRequired,
   email: PropTypes.string.isRequired,
-  phone: PropTypes.string.isRequired
+  phone: PropTypes.string.isRequired,
+  deleteClickHandler: PropTypes.func.isRequired
 };
 
 export default Contact;
